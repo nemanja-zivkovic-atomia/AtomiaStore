@@ -8,12 +8,18 @@ Atomia.ViewModels = Atomia.ViewModels || {};
         var self = this;
 
         self.termsOfService = ko.observableArray(terms);
+        self.disableCheckoutAction = ko.observable(false);
 
         utils.subscribe('cart:remove', function (removedItem) {
             checkoutApi.getTermsOfService(function (result) {
                 self.termsOfService(result);
             })
         });
+
+        self.submit = function () {
+            self.disableCheckoutAction(true);
+            return true;
+        };
     }
 
     _.extend(exports, {

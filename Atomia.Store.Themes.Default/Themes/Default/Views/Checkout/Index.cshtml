@@ -9,7 +9,7 @@
         @{ Html.RenderPartial("_EmptyCart", Model); }
     </div>
 
-    @using (Html.BeginForm("Index", "Checkout", FormMethod.Post, new { id = "Checkout_Form" }))
+    @using (Html.BeginForm("Index", "Checkout", FormMethod.Post, new { id = "Checkout_Form", data_bind = "submitValid: Atomia.VM.termsOfService.submit" }))
     {
         @Html.AntiForgeryToken()
 

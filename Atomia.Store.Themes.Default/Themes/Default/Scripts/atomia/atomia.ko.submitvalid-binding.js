@@ -7,9 +7,15 @@
         init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
             var validatingValueAccessor = function () {
                 return function (data, event) {
+                    var submit = false;
+
                     if ($(element).valid()) {
-                        valueAccessor().call(viewModel, data, event);
+                        var submitHandler = valueAccessor() || function () { return true; };
+
+                        submit = submitHandler.call(viewModel, data, event);
                     }
+
+                    return submit;
                 };
             };
 

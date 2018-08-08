@@ -5,7 +5,9 @@
 }
 
 <p class="actions" style="display: block;">
-    @Html.RouteLink(Html.CommonResource("Back"), orderFlow.CurrentStep.Previous, routeValues, new { id = "back_step", @class = "button large", style = "display: inline-block;" })
-    <button type="submit" class="button green" style="vertical-align:top;" data-bind="visible: !cart.isEmpty() && cart.hasHostingPackage() && !vatValidation.initialCheckDone(), click: vatValidation.enableRevalidation">@Html.CommonResource("Checkout")</button>
-    <button type="submit" class="button green" style="vertical-align:top;" data-bind="visible: !cart.isEmpty() && cart.hasHostingPackage() && vatValidation.initialCheckDone()">@Html.CommonResource("Checkout")</button>
+    <span class="button large disabled" data-bind="visible: Atomia.VM.termsOfService.disableCheckoutAction()">@Html.CommonResource("Back")</span>
+    @Html.RouteLink(Html.CommonResource("Back"), orderFlow.CurrentStep.Previous, routeValues, new { id = "back_step", @class = "button large", style = "display: inline-block;", data_bind = "visible: !Atomia.VM.termsOfService.disableCheckoutAction()" })
+    <button type="button" class="button disabled icn_" style="vertical-align:top;" data-bind="visible: !cart.isEmpty() && cart.hasHostingPackage() && vatValidation.initialCheckDone() && Atomia.VM.termsOfService.disableCheckoutAction()">@Html.CommonResource("Checkout")</button>
+    <button type="submit" class="button green" style="vertical-align:top;" data-bind="visible: !cart.isEmpty() && cart.hasHostingPackage() && !vatValidation.initialCheckDone(), click: vatValidation.disableCheckoutAction">@Html.CommonResource("Checkout")</button>
+    <button type="submit" class="button green" style="vertical-align:top;" data-bind="visible: !cart.isEmpty() && cart.hasHostingPackage() && vatValidation.initialCheckDone() && !Atomia.VM.termsOfService.disableCheckoutAction()">@Html.CommonResource("Checkout")</button>
 </p>
