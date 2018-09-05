@@ -30,11 +30,14 @@
             TemplateInfo = new TemplateInfo { HtmlFieldPrefix = Model.WhoisContact.Id }
         });
 
+        Html.RenderPartial("_NoridDeclaration", Model.NoridDeclaration, new ViewDataDictionary
+        {
+            TemplateInfo = new TemplateInfo { HtmlFieldPrefix = Model.NoridDeclaration.Id }
+        });
+
         Html.HiddenFor(m => m.OtherBillingContact, new { data_bind = "value: otherBillingContact" });
 
         Html.HiddenFor(m => m.OtherWhoisContact, new { data_bind = "value: otherWhoisContact" });
-
-        Html.RenderPartial("_NoridDeclaration", Model.NoridDeclaration);
 
         Html.RenderPartial("_ExtraForms", Model);
 

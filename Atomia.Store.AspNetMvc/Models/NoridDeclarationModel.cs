@@ -10,6 +10,11 @@ namespace Atomia.Store.AspNetMvc.Models
 {
     public class NoridDeclarationModel
     {
+        public string Id
+        {
+            get { return "NoridDeclaration"; }
+        }
+
         [AtomiaRequired("Common,ErrorEmptyField")]
         public string SignedName { get; set; }
 
