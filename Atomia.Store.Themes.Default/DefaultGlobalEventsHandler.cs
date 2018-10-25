@@ -29,7 +29,7 @@ namespace Atomia.Store.Themes.Default
         /// <param name="container">The Unity container that will be set as Asp.Net MVC dependency resolver</param>
         protected virtual void RegisterConfiguration(UnityContainer container)
         {
-            
+
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Atomia.Store.Themes.Default
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
 
-            // RazorThemeViewEngine works with one instance per theme and lets the view engine selection 
+            // RazorThemeViewEngine works with one instance per theme and lets the view engine selection
             // algorithm do its work to find a view.
             var themeNamesProvider = container.Resolve<IThemeNamesProvider>();
             foreach (var theme in themeNamesProvider.GetActiveThemeNames())
@@ -91,6 +91,8 @@ namespace Atomia.Store.Themes.Default
 
                 // Register "theme" key in session, which is required by legacy resource string handling in Atomia.Web.Base
                 HttpContext.Current.Session["theme"] = themeNamesProvider.GetCurrentThemeName();
+                // Register "parentTheme" key in session, this is required for Atomia.Web.Base, store doesn't have implemented concept of "parent theme"
+                HttpContext.Current.Session["parentTheme"] = "Default";
             }
         }
 
@@ -173,7 +175,7 @@ namespace Atomia.Store.Themes.Default
 
                 HttpContext.Current.Response.Clear();
                 HttpContext.Current.Response.TrySkipIisCustomErrors = true;
-                
+
                 IController errorController = new ErrorController();
                 errorController.Execute(new RequestContext(new HttpContextWrapper(HttpContext.Current), routeData));
             }
