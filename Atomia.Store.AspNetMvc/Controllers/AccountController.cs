@@ -2,6 +2,7 @@
 using Atomia.Store.AspNetMvc.Helpers;
 using Atomia.Store.AspNetMvc.Models;
 using Atomia.Store.Core;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -56,6 +57,41 @@ namespace Atomia.Store.AspNetMvc.Controllers
         {
             if (ModelState.IsValid)
             {
+                // email to lowercase
+                MainContactModel mainContact = (model as DefaultAccountViewModel).MainContact;
+                BillingContactModel billingContact = (model as DefaultAccountViewModel).BillingContact;
+                if (mainContact != null)
+                {
+                    mainContact.Email = mainContact.Email.ToLower();
+                    if (!string.IsNullOrEmpty(mainContact.Username))
+                    {
+                        mainContact.Username = mainContact.Username.ToLower();
+                    }
+                    
+                }
+                else
+                {
+                    Exception ex = new Exception("Failed to lowercase main email.");
+                    var logger = DependencyResolver.Current.GetService<ILogger>();
+                    logger.LogException(ex);
+                    throw ex;
+                }
+                if (billingContact != null)
+                {
+                    if (!string.IsNullOrEmpty(billingContact.Email))
+                    {
+                        billingContact.Email = billingContact.Email.ToLower();
+                    }
+                }
+                else
+                {
+                    Exception ex = new Exception("Failed to lowercase billing email.");
+                    var logger = DependencyResolver.Current.GetService<ILogger>();
+                    logger.LogException(ex);
+                    throw ex;
+                }
+
+
                 contactDataProvider.SaveContactData(model);
                 var orderFlow = (OrderFlowModel)ViewBag.OrderFlow;
                 var routeValues = orderFlow.IsQueryStringBased ? new { flow = orderFlow.Name } : null;
