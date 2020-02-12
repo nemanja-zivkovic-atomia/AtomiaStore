@@ -86,7 +86,9 @@ Atomia.ViewModels = Atomia.ViewModels || {};
             var noDomainsIDN = [];
             for (var i = 0; i < noDomains.length; i++) {
                 var IDN = punycode.toASCII(noDomains[i]);
-                IDN === noDomains[i] ? "" : noDomainsIDN.push(IDN);
+                if (IDN !== noDomains[i]) {
+                    noDomainsIDN.push(IDN);
+                }
             }
 
             window.open('/Account/NoridTermsOfService?name=' + self.noridSignedName() + '&applicantName=' + applicantName + '&applicantNumber=' + applicantNumber + '&domains=' + noDomains.join('|') + '&domainsIDN=' + noDomainsIDN.join('|') + '&time=' + self.getTime(true), 'mywindow', 'status=1');
